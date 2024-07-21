@@ -2,6 +2,8 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
+#include "Shaders/Shader.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int main()
@@ -46,22 +48,6 @@ int main()
         "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}\n";
 
-    GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex, 1, &vertex_source, NULL);
-    glCompileShader(vertex);
-
-    GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragment_source, NULL);
-    glCompileShader(fragment);
-
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
-
-    glDeleteShader(vertex);
-    glDeleteShader(fragment);
-
     float vertices[] =
     {
         -0.5f,  0.5f,   // Top left
@@ -76,6 +62,8 @@ int main()
         0, 2, 3
     };
 
+    Shader* shader = new Shader(vertex_source, fragment_source);
+
     //  VERTEX BUFFER OBJECT
     GLuint VBO;
     glGenBuffers(1, &VBO);
@@ -87,7 +75,7 @@ int main()
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    GLuint position_location = glGetAttribLocation(program, "aPosition");
+    GLuint position_location = glGetAttribLocation(shader->programID, "aPosition");
 
     glVertexAttribPointer(position_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(position_location);
@@ -103,7 +91,7 @@ int main()
         glClearColor(0.4f, 0.6f, 0.9f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(program);
+        shader->use();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
