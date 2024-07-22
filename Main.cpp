@@ -3,6 +3,10 @@
 #include <GLFW/glfw3.h>
 
 #include "Shaders/Shader.h"
+#include "Utils/ResourceFile.h"
+
+constexpr const char* VERTEX_PATH = "Shaders/Sources/vertex.glsl";
+constexpr const char* FRAGMENT_PATH = "Shaders/Sources/fragment.glsl";
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -32,22 +36,6 @@ int main()
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    const char* vertex_source =
-        "#version 330 core\n"
-        "layout (location = 0) in vec2 aPosition;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPosition, 0.0, 1.0);\n"
-        "}\n";
-
-    const char* fragment_source =
-        "#version 330 core\n"
-        "out vec4 color;\n"
-        "void main()"
-        "{\n"
-        "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
-        "}\n";
-
     float vertices[] =
     {
         -0.5f,  0.5f,   // Top left
@@ -62,7 +50,7 @@ int main()
         0, 2, 3
     };
 
-    Shader* shader = new Shader(vertex_source, fragment_source);
+    Shader* shader = new Shader(ResourceFile::FileToString(VERTEX_PATH), ResourceFile::FileToString(FRAGMENT_PATH));
 
     //  VERTEX BUFFER OBJECT
     GLuint VBO;
