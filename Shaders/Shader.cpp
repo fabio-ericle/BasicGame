@@ -1,17 +1,20 @@
 #include "Shader.h"
 #include <glm/gtc/type_ptr.hpp>
 
-Shader::Shader(const char* vertexSource, const char* fragmentSource)
+Shader::Shader(const std::string& vertexSource, const std::string& fragmentSource)
 {
+	const char* vertexSourceCode = vertexSource.c_str();
+	const char* fragmentSourceCode = fragmentSource.c_str();
+
 	// Create vertex shader
 	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertex, 1, &vertexSource, NULL);
+	glShaderSource(vertex, 1, &vertexSourceCode, NULL);
 	glCompileShader(vertex);
 	checkErrors(vertex, "VERTEX");
 
 	// Create fragment shader
 	GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragment, 1, &fragmentSource, NULL);
+	glShaderSource(fragment, 1, &fragmentSourceCode, NULL);
 	glCompileShader(fragment);
 	checkErrors(fragment, "FRAGMENT");
 
@@ -21,6 +24,7 @@ Shader::Shader(const char* vertexSource, const char* fragmentSource)
 	glAttachShader(this->programID, fragment);
 	
 	glLinkProgram(this->programID);
+	checkErrors(this->programID, "PROGRAM");
 
 	// Delete shaders
 	glDeleteShader(vertex);
@@ -72,17 +76,22 @@ GLuint Shader::getUniformLocation(std::string name) const
 	return glGetUniformLocation(this->programID, name.c_str());
 }
 
-void Shader::checkErrors(GLuint objec, std::string type)
+GLuint Shader::getAttribLocation(std::string name) const
+{
+	return glGetAttribLocation(this->programID, name.c_str());
+}
+
+void Shader::checkErrors(GLuint object, std::string type)
 {
 	int compileSuccess = 0;
 	char infoCompileLog[1024];
 
 	if (type != "PROGRAM")
 	{
-		glGetShaderiv(objec, GL_COMPILE_STATUS, &compileSuccess);
+		glGetShaderiv(object, GL_COMPILE_STATUS, &compileSuccess);
 		if (!compileSuccess)
 		{
-			glGetShaderInfoLog(objec, 1024, NULL, infoCompileLog);
+			glGetShaderInfoLog(object, 1024, NULL, infoCompileLog);
 			std::cout << "\nERROR::SHADER::" << type << "::FAILED_TO_COMPILE\n" << infoCompileLog << "\n";
 		}
 	}
@@ -90,15 +99,15 @@ void Shader::checkErrors(GLuint objec, std::string type)
 	{
 		if (type == "PROGRAM")
 		{
-			glGetProgramiv(objec, GL_LINK_STATUS, &compileSuccess);
+			glGetProgramiv(object, GL_LINK_STATUS, &compileSuccess);
 			if (!compileSuccess)
 			{
-				glGetProgramInfoLog(objec, 1024, NULL, infoCompileLog);
+				glGetProgramInfoLog(object, 1024, NULL, infoCompileLog);
 				std::cout << "\nERROR::SHADER::PROGRAM::FAILED_TO_COMPILE\n" << infoCompileLog << "\n";
 			}
 			else
 			{
-				std::cout << "ERROR::SHADER::WRONG_TYPE\n";
+				std::cout << "\nERROR::SHADER::WRONG_TYPE\n";
 			}
 		}
 	}
