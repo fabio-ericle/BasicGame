@@ -71,12 +71,12 @@ void Shader::setMat4(const std::string& name, glm::mat4 value) const
 	glUniformMatrix4fv(this->getUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-GLuint Shader::getUniformLocation(std::string name) const
+GLuint Shader::getUniformLocation(const std::string& name) const
 {
 	return glGetUniformLocation(this->programID, name.c_str());
 }
 
-GLuint Shader::getAttribLocation(std::string name) const
+GLuint Shader::getAttribLocation(const std::string& name) const
 {
 	return glGetAttribLocation(this->programID, name.c_str());
 }
@@ -105,10 +105,10 @@ void Shader::checkErrors(GLuint object, std::string type)
 				glGetProgramInfoLog(object, 1024, NULL, infoCompileLog);
 				std::cout << "\nERROR::SHADER::PROGRAM::FAILED_TO_COMPILE\n" << infoCompileLog << "\n";
 			}
-			else
-			{
-				std::cout << "\nERROR::SHADER::WRONG_TYPE\n";
-			}
+		}
+		else
+		{
+			std::cout << "\nERROR::SHADER::WRONG_TYPE\n";
 		}
 	}
 }

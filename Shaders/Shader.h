@@ -22,8 +22,8 @@ public:
 	void setVec2(const std::string& name, glm::vec2 value) const;
 	void setVec3(const std::string& name, glm::vec3 value) const;
 	void setMat4(const std::string& name, glm::mat4 value) const;
-	GLuint getUniformLocation(std::string name) const;
-	GLuint getAttribLocation(std::string name) const;
+	GLuint getUniformLocation(const std::string& name) const;
+	GLuint getAttribLocation(const std::string& name) const;
 
 private:
 	void checkErrors(GLuint object, std::string type);
