@@ -14,9 +14,9 @@ void Texture2D::generate(GLuint width, GLuint height, unsigned char* data)
 {
 	this->width = width;
 	this->height = height;
-	
+
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, this->internalFornat, this->width, this->height, 0, this->imageFormat, GL_UNSIGNED_INT, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, this->internalFornat, this->width, this->height, 0, this->imageFormat, GL_UNSIGNED_BYTE, data);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->wrap_s);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->wrap_t);
@@ -29,4 +29,9 @@ void Texture2D::generate(GLuint width, GLuint height, unsigned char* data)
 void Texture2D::bind() const
 {
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
+}
+
+void Texture2D::unbind() const
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
