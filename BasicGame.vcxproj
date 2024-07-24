@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClCompile Include="Glad\glad.c" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Shaders\Texture2D.cpp" />
+    <ClCompile Include="Shaders\SpriteRenderer.cpp" />
     <ClCompile Include="Utils\ResourceFile.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
   </ItemGroup>
@@ -161,8 +163,14 @@
     <None Include="Shaders\Sources\vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Shaders\Texture2D.h" />
+    <ClInclude Include="Shaders\SpriteRenderer.h" />
     <ClInclude Include="Utils\ResourceFile.h" />
     <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Utils\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="container.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
