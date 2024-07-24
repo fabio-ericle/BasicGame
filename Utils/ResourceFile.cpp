@@ -11,7 +11,7 @@ ResourceFile::~ResourceFile()
 {
 }
 
-const const std::string ResourceFile::FileToString(const std::string path)
+const std::string ResourceFile::FileToString(const std::string path)
 {
 	if (path.empty())
 	{
